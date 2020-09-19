@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Михаил Пайметов](https://up.htmlacademy.ru/javascript/21/user/1272521).
-* Наставник: `Неизвестно`.
+* Наставник: [Илья Соколов](https://htmlacademy.ru/profile/id53279).
 
 ---
 
