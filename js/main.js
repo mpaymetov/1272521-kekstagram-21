@@ -20,10 +20,16 @@ const getRandom = function (number = 1, offset = 0) {
   return result;
 };
 
+const getRandomArray = function (array) {
+  const element = array[getRandom(array.length - 1)];
+  return element;
+};
+
 const createRandomComment = function () {
-  const commentAvatar = `img/avatar-${getRandom(AVATARS_COUNT - 1, 1)}.svg`;
-  const commentMessage = MESSAGES[getRandom(MESSAGES.length - 1)];
-  const commentName = NAMES[getRandom(NAMES.length - 1)];
+  const randomAvatarNumber = getRandom(AVATARS_COUNT - 1, 1);
+  const commentAvatar = `img/avatar-${randomAvatarNumber}.svg`;
+  const commentMessage = getRandomArray(MESSAGES);
+  const commentName = getRandomArray(NAMES);
   const comment = {
     avatar: commentAvatar,
     message: commentMessage,
@@ -41,7 +47,7 @@ const createComments = function () {
   return comments;
 };
 
-const createPhotoDecr = function (number) {
+const createPhotoData = function (number) {
   const url = `photos/${number}.jpg`;
   const description = `Фотография № ${number}`;
   const likes = getRandom(LIKES_MAX - LIKES_MIN, LIKES_MIN);
@@ -55,15 +61,17 @@ const createPhotoDecr = function (number) {
   return photo;
 };
 
-const createPhotoDecrArr = function () {
+const createPhotoDataArray = function (photosCount) {
   let photos = [];
-  for (let i = 1; i <= PHOTOS_COUNT; i++) {
-    photos.push(createPhotoDecr(i));
+  for (let i = 1; i <= photosCount; i++) {
+    const photoDescription = createPhotoData(i);
+    photos.push(photoDescription);
   }
   return photos;
 };
 
-const pictureTemplate = document.querySelector('#picture').content.querySelector('a');
+const pictureTemplateBlock = document.querySelector('#picture');
+const pictureTemplate = pictureTemplateBlock.content.querySelector('a');
 
 const renderPicture = function (pictureData) {
   let element = pictureTemplate.cloneNode(true);
@@ -75,10 +83,12 @@ const renderPicture = function (pictureData) {
 
 const renderPictures = function () {
   const pictureContainer = document.querySelector('.pictures');
-  const photoArr = createPhotoDecrArr();
+  const photoArr = createPhotoDataArray(PHOTOS_COUNT);
   let fragment = document.createDocumentFragment();
   for (let i = 0; i < PHOTOS_COUNT; i++) {
-    fragment.appendChild(renderPicture(photoArr[i]));
+    const photoData = photoArr[i];
+    const photoElement = renderPicture(photoData);
+    fragment.appendChild(photoElement);
   }
   pictureContainer.appendChild(fragment);
 };
