@@ -19,6 +19,9 @@ const MAX_CONTROL_VALUE = 100;
 const MIN_CONTROL_VALUE = 25;
 const CONTROL_STEP = 25;
 const HIDE_CLASS = 'hidden';
+const HASHTAGS_MAX_COUNT = 5;
+const HASHTAGS_DELIMITER = ' ';
+const DESCRIPTION_MAX_LENGHT = 140;
 
 const getRandom = function (number = 1, offset = 0) {
   const result = Math.round(number * Math.random() + offset);
@@ -104,11 +107,17 @@ const fileInput = document.querySelector('#upload-file');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const body = document.querySelector('body');
 const modalCloseButton = document.querySelector('#upload-cancel');
+const hashtagsInput = document.querySelector('.text__hashtags');
+const descriptionInput = document.querySelector('.text__description');
 
 const onModalEscPress = function (evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
-    closeModal();
+    const isHashtagsInputFocus = hashtagsInput === document.activeElement;
+    const isDescriptionInputFocus = descriptionInput === document.activeElement;
+    if (!isHashtagsInputFocus && !isDescriptionInputFocus) {
+      closeModal();
+    }
   }
 };
 
@@ -259,3 +268,59 @@ const onPinMove = function () {
 };
 
 effectLevelPin.addEventListener('mouseup', onPinMove);
+
+const isHashtag = function (word) {
+  const hashtagRegex = /^#[A-Za-z0-9]{1,19}$/;
+  const result = hashtagRegex.test(word);
+  return result;
+};
+
+const isAllArrElemUniq = (arr) => {
+  let isAllUniq = true;
+  let arrLowerCase = arr.map((element) => {
+    return element.toLowerCase();
+  });
+  const sortedArr = arrLowerCase.sort();
+  for (let i = 0; i < sortedArr.length - 1; i++) {
+    isAllUniq = isAllUniq && (sortedArr[i] !== sortedArr[i + 1]);
+  }
+  return isAllUniq;
+};
+
+const onHashtagInput = function () {
+  const hashtags = hashtagsInput.value.split(HASHTAGS_DELIMITER);
+  const hashtagArr = hashtags.filter((elem) => {
+    return Boolean(elem.length);
+  });
+  const hashtagCount = hashtagArr.length;
+  const hashtagCountError = hashtagCount > HASHTAGS_MAX_COUNT;
+  const hashtagError = hashtagCount && !hashtagArr.every(isHashtag);
+  const hashtagUniqError = !isAllArrElemUniq(hashtagArr);
+
+  if (hashtagCountError) {
+    hashtagsInput.setCustomValidity('нельзя указать больше пяти хэш-тегов');
+  } else if (hashtagError) {
+    hashtagsInput.setCustomValidity('неверный хештег');
+  } else if (hashtagUniqError) {
+    hashtagsInput.setCustomValidity('хэш-тег не может быть использован дважды');
+  } else {
+    hashtagsInput.setCustomValidity('');
+  }
+  hashtagsInput.reportValidity();
+};
+
+const onDescriptionInput = function () {
+  const descriptionTextLength = descriptionInput.value.length;
+  const descriptionError = descriptionTextLength > DESCRIPTION_MAX_LENGHT;
+
+  if (descriptionError) {
+    descriptionInput.setCustomValidity('комментарий не может быть больше 140 символов');
+  } else {
+    descriptionInput.setCustomValidity('');
+  }
+
+  descriptionInput.reportValidity();
+};
+
+hashtagsInput.addEventListener('input', onHashtagInput);
+descriptionInput.addEventListener('input', onDescriptionInput);
