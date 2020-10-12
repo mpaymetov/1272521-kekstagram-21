@@ -110,6 +110,11 @@ const modalCloseButton = document.querySelector('#upload-cancel');
 const hashtagsInput = document.querySelector('.text__hashtags');
 const descriptionInput = document.querySelector('.text__description');
 
+const controlSmallerButton = document.querySelector('.scale__control--smaller');
+const controlBiggerButton = document.querySelector('.scale__control--bigger');
+const controlValue = document.querySelector('.scale__control--value');
+const imagePreview = document.querySelector('.img-upload__preview');
+
 const onModalEscPress = function (evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
@@ -131,6 +136,9 @@ const closeModal = function () {
   imgUploadOverlay.classList.add(HIDE_CLASS);
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onModalEscPress);
+  fileInput.value = '';
+  const defaultScalePercent = 100;
+  setScale(imagePreview, defaultScalePercent);
 };
 
 fileInput.addEventListener('change', function () {
@@ -143,14 +151,9 @@ modalCloseButton.addEventListener('click', function () {
 
 openModal();
 
-const controlSmallerButton = document.querySelector('.scale__control--smaller');
-const controlBiggerButton = document.querySelector('.scale__control--bigger');
-const controlValue = document.querySelector('.scale__control--value');
-const imagePreview = document.querySelector('.img-upload__preview');
-
 const getIntValue = function (element) {
   const valueString = element.value;
-  let number = window.parseInt(valueString);
+  const number = window.parseInt(valueString);
   return number;
 };
 
@@ -276,14 +279,11 @@ const isHashtag = function (word) {
 };
 
 const isAllArrElemUniq = (arr) => {
-  let isAllUniq = true;
-  let arrLowerCase = arr.map((element) => {
+  const arrLowerCase = arr.map((element) => {
     return element.toLowerCase();
   });
-  const sortedArr = arrLowerCase.sort();
-  for (let i = 0; i < sortedArr.length - 1; i++) {
-    isAllUniq = isAllUniq && (sortedArr[i] !== sortedArr[i + 1]);
-  }
+  const unique = new Set(arrLowerCase);
+  const isAllUniq = arr.length === unique.size;
   return isAllUniq;
 };
 
