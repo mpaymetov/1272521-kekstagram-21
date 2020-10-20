@@ -1,13 +1,6 @@
 'use strict';
 
 (function () {
-  const HASHTAGS_MAX_COUNT = 5;
-  const HASHTAGS_DELIMITER = ' ';
-  const DESCRIPTION_MAX_LENGHT = 140;
-
-  const hashtagsInput = document.querySelector('.text__hashtags');
-  const descriptionInput = document.querySelector('.text__description');
-
   const isHashtag = function (word) {
     const hashtagRegex = /^#[A-Za-z0-9]{1,19}$/;
     const result = hashtagRegex.test(word);
@@ -15,43 +8,41 @@
   };
 
   const onHashtagInput = function () {
-    const hashtags = hashtagsInput.value.split(HASHTAGS_DELIMITER);
+    const hashtags = window.config.hashtagsInput.value.split(window.config.HASHTAGS_DELIMITER);
     const hashtagArr = hashtags.filter((elem) => {
       return Boolean(elem.length);
     });
     const hashtagCount = hashtagArr.length;
-    const hashtagCountError = hashtagCount > HASHTAGS_MAX_COUNT;
+    const hashtagCountError = hashtagCount > window.config.HASHTAGS_MAX_COUNT;
     const hashtagError = hashtagCount && !hashtagArr.every(isHashtag);
     const hashtagUniqError = !window.util.isAllArrStrElemUniq(hashtagArr);
 
     if (hashtagCountError) {
-      hashtagsInput.setCustomValidity('нельзя указать больше пяти хэш-тегов');
+      window.config.hashtagsInput.setCustomValidity('нельзя указать больше пяти хэш-тегов');
     } else if (hashtagError) {
-      hashtagsInput.setCustomValidity('неверный хештег');
+      window.config.hashtagsInput.setCustomValidity('неверный хештег');
     } else if (hashtagUniqError) {
-      hashtagsInput.setCustomValidity('хэш-тег не может быть использован дважды');
+      window.config.hashtagsInput.setCustomValidity('хэш-тег не может быть использован дважды');
     } else {
-      hashtagsInput.setCustomValidity('');
+      window.config.hashtagsInput.setCustomValidity('');
     }
-    hashtagsInput.reportValidity();
+    window.config.hashtagsInput.reportValidity();
   };
 
   const onDescriptionInput = function () {
-    const descriptionTextLength = descriptionInput.value.length;
-    const descriptionError = descriptionTextLength > DESCRIPTION_MAX_LENGHT;
+    const descriptionTextLength = window.config.descriptionInput.value.length;
+    const descriptionError = descriptionTextLength > window.config.DESCRIPTION_MAX_LENGHT;
 
     if (descriptionError) {
-      descriptionInput.setCustomValidity('комментарий не может быть больше 140 символов');
+      window.config.descriptionInput.setCustomValidity('комментарий не может быть больше 140 символов');
     } else {
-      descriptionInput.setCustomValidity('');
+      window.config.descriptionInput.setCustomValidity('');
     }
 
-    descriptionInput.reportValidity();
+    window.config.descriptionInput.reportValidity();
   };
 
   window.form = {
-    hashtagsInput: hashtagsInput,
-    descriptionInput: descriptionInput,
     onHashtagInput: onHashtagInput,
     onDescriptionInput: onDescriptionInput
   };

@@ -1,10 +1,6 @@
 'use strict';
 
 (function () {
-  const LIKES_MIN = 15;
-  const LIKES_MAX = 200;
-  const AVATARS_COUNT = 6;
-
   const NAMES = ["Иван", "Николай", "Михаил", "Алексей", "Владимир", "Сергей", "Артем"];
   const MESSAGES = [
     "Всё отлично!",
@@ -16,7 +12,7 @@
   ];
 
   const createRandomComment = function () {
-    const randomAvatarNumber = window.util.getRandom(AVATARS_COUNT - 1, 1);
+    const randomAvatarNumber = window.util.getRandom(window.config.AVATARS_COUNT - 1, 1);
     const commentAvatar = `img/avatar-${randomAvatarNumber}.svg`;
     const commentMessage = window.util.getRandomArray(MESSAGES);
     const commentName = window.util.getRandomArray(NAMES);
@@ -40,7 +36,7 @@
   const createPhotoData = function (number) {
     const url = `photos/${number}.jpg`;
     const description = `Фотография № ${number}`;
-    const likes = window.util.getRandom(LIKES_MAX - LIKES_MIN, LIKES_MIN);
+    const likes = window.util.getRandom(window.config.LIKES_MAX - window.config.LIKES_MIN, window.config.LIKES_MIN);
     const comments = createComments();
     const photo = {
       url: url,

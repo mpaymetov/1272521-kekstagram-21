@@ -2,12 +2,12 @@
 
 (function () {
   const pictureContainer = document.querySelector('.pictures');
-  const photoData = window.data.createPhotoDataArray(window.util.PHOTOS_COUNT);
+  const photoData = window.data.createPhotoDataArray(window.config.PHOTOS_COUNT);
   const pictureTemplateBlock = document.querySelector('#picture');
   const pictureTemplate = pictureTemplateBlock.content.querySelector('a');
   window.gallery.renderPictures(photoData, pictureContainer, pictureTemplate);
 
-  window.util.fileInput.addEventListener('change', function () {
+  window.config.fileInput.addEventListener('change', function () {
     window.modal.openModal();
   });
 
@@ -34,6 +34,6 @@
   const effectLevelPin = document.querySelector('.effect-level__pin');
   effectLevelPin.addEventListener('mouseup', window.preview.onPinMove);
 
-  window.form.hashtagsInput.addEventListener('input', window.form.onHashtagInput);
-  window.form.descriptionInput.addEventListener('input', window.form.onDescriptionInput);
+  window.config.hashtagsInput.addEventListener('input', window.form.onHashtagInput);
+  window.config.descriptionInput.addEventListener('input', window.form.onDescriptionInput);
 })();

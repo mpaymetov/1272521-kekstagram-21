@@ -1,15 +1,6 @@
 'use strict';
 
 (function () {
-  const MAX_CONTROL_VALUE = 100;
-  const MIN_CONTROL_VALUE = 25;
-  const CONTROL_STEP = 25;
-  const EFFECT_CLASS_START = 'effects__preview--';
-
-  const controlValue = document.querySelector('.scale__control--value');
-  const imagePreview = document.querySelector('.img-upload__preview');
-  const defaultScalePercent = 100;
-
   const effectLevelLine = document.querySelector('.effect-level__line');
   const effectLevelDepth = document.querySelector('.effect-level__depth');
   const effectLevelValue = document.querySelector('.effect-level__value');
@@ -23,20 +14,20 @@
   };
 
   const valueUp = function () {
-    let number = window.util.getIntValue(controlValue);
-    if ((number + CONTROL_STEP) <= MAX_CONTROL_VALUE) {
-      number += CONTROL_STEP;
-      controlValue.value = number + '%';
-      setScale(imagePreview, number);
+    let number = window.util.getIntValue(window.config.controlValue);
+    if ((number + window.config.CONTROL_STEP) <= window.config.MAX_CONTROL_VALUE) {
+      number += window.config.CONTROL_STEP;
+      window.config.controlValue.value = number + '%';
+      setScale(window.config.imagePreview, number);
     }
   };
 
   const valueDown = function () {
-    let number = window.util.getIntValue(controlValue);
-    if ((number - CONTROL_STEP) >= MIN_CONTROL_VALUE) {
-      number -= CONTROL_STEP;
-      controlValue.value = number + '%';
-      setScale(imagePreview, number);
+    let number = window.util.getIntValue(window.config.controlValue);
+    if ((number - window.config.CONTROL_STEP) >= window.config.MIN_CONTROL_VALUE) {
+      number -= window.config.CONTROL_STEP;
+      window.config.controlValue.value = number + '%';
+      setScale(window.config.imagePreview, number);
     }
   };
 
@@ -53,9 +44,9 @@
   const removeAllEffectClasses = function () {
     const effectsList = getEffectList();
     for (let i = 0; i < effectsList.length; i++) {
-      const effectClassName = EFFECT_CLASS_START + effectsList[i];
-      if (imagePreview.classList.contains(effectClassName)) {
-        imagePreview.classList.remove(effectClassName);
+      const effectClassName = window.config.EFFECT_CLASS_START + effectsList[i];
+      if (window.config.imagePreview.classList.contains(effectClassName)) {
+        window.config.imagePreview.classList.remove(effectClassName);
       }
     }
   };
@@ -63,16 +54,17 @@
   const onEffectsChange = function (evt) {
     if (evt.target && evt.target.matches('input[type="radio"]')) {
       removeAllEffectClasses();
-      imagePreview.style = '';
+      window.config.imagePreview.style = '';
+      window.config.controlValue.value = window.config.defaultScalePercent + '%';
       imageEffect = evt.target.value;
       if (imageEffect !== 'none') {
-        const effectClass = EFFECT_CLASS_START + imageEffect;
-        imagePreview.classList.add(effectClass);
-        if (effectLevelBar.classList.contains(window.util.HIDE_CLASS)) {
-          effectLevelBar.classList.remove(window.util.HIDE_CLASS);
+        const effectClass = window.config.EFFECT_CLASS_START + imageEffect;
+        window.config.imagePreview.classList.add(effectClass);
+        if (effectLevelBar.classList.contains(window.config.HIDE_CLASS)) {
+          effectLevelBar.classList.remove(window.config.HIDE_CLASS);
         }
       } else {
-        effectLevelBar.classList.add(window.util.HIDE_CLASS);
+        effectLevelBar.classList.add(window.config.HIDE_CLASS);
       }
     }
   };
@@ -97,7 +89,7 @@
       const effectValue = level * 2 + 1;
       effectStyle = 'filter: brightness(' + effectValue + ')';
     }
-    imagePreview.style = effectStyle;
+    window.config.imagePreview.style = effectStyle;
   };
 
   const onPinMove = function () {
@@ -110,12 +102,11 @@
   };
 
   window.preview = {
-    imagePreview: imagePreview,
-    defaultScalePercent: defaultScalePercent,
     effectLevelBar: effectLevelBar,
     setScale: setScale,
     valueUp: valueUp,
     valueDown: valueDown,
+    removeAllEffectClasses: removeAllEffectClasses,
     onEffectsChange: onEffectsChange,
     onPinMove: onPinMove
   };
