@@ -4,10 +4,6 @@
   const PHOTOS_COUNT = 25;
   const HIDE_CLASS = 'hidden';
 
-  const LIKES_MIN = 15;
-  const LIKES_MAX = 200;
-  const AVATARS_COUNT = 6;
-
   const MAX_CONTROL_VALUE = 100;
   const MIN_CONTROL_VALUE = 25;
   const CONTROL_STEP = 25;
@@ -25,12 +21,15 @@
   const hashtagsInput = document.querySelector('.text__hashtags');
   const descriptionInput = document.querySelector('.text__description');
 
+  const pictureContainer = document.querySelector('.pictures');
+  const pictureTemplateBlock = document.querySelector('#picture');
+  const pictureTemplate = pictureTemplateBlock.content.querySelector('a');
+
+  const dataLoadUrl = "https://21.javascript.pages.academy/kekstagram/data";
+
   window.config = {
     PHOTOS_COUNT: PHOTOS_COUNT,
     HIDE_CLASS: HIDE_CLASS,
-    LIKES_MIN: LIKES_MIN,
-    LIKES_MAX: LIKES_MAX,
-    AVATARS_COUNT: AVATARS_COUNT,
     MAX_CONTROL_VALUE: MAX_CONTROL_VALUE,
     MIN_CONTROL_VALUE: MIN_CONTROL_VALUE,
     CONTROL_STEP: CONTROL_STEP,
@@ -43,6 +42,9 @@
     descriptionInput: descriptionInput,
     controlValue: controlValue,
     imagePreview: imagePreview,
-    defaultScalePercent: defaultScalePercent
+    defaultScalePercent: defaultScalePercent,
+    pictureContainer: pictureContainer,
+    pictureTemplate: pictureTemplate,
+    dataLoadUrl: dataLoadUrl
   };
 })();

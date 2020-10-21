@@ -1,11 +1,7 @@
 'use strict';
 
 (function () {
-  const pictureContainer = document.querySelector('.pictures');
-  const photoData = window.data.createPhotoDataArray(window.config.PHOTOS_COUNT);
-  const pictureTemplateBlock = document.querySelector('#picture');
-  const pictureTemplate = pictureTemplateBlock.content.querySelector('a');
-  window.gallery.renderPictures(photoData, pictureContainer, pictureTemplate);
+  window.load(window.config.dataLoadUrl, window.gallery.renderPictures, window.util.showError);
 
   window.config.fileInput.addEventListener('change', function () {
     window.modal.openModal();
@@ -15,8 +11,6 @@
   modalCloseButton.addEventListener('click', function () {
     window.modal.closeModal();
   });
-
-  window.modal.openModal();
 
   const controlSmallerButton = document.querySelector('.scale__control--smaller');
   controlSmallerButton.addEventListener('click', function () {
