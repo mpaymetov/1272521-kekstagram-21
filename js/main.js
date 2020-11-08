@@ -1,33 +1,15 @@
 'use strict';
 
 (function () {
-  window.load(window.config.dataLoadUrl, window.gallery.renderPictures, window.util.showError);
+  window.load(window.config.DATA_LOAD_URL, window.gallery.onContentLoad, window.util.showError);
 
-  window.config.fileInput.addEventListener('change', function () {
-    window.modal.openModal();
-  });
+  window.modal.fileInput.addEventListener('change', window.modal.openModal);
 
-  const modalCloseButton = document.querySelector('#upload-cancel');
-  modalCloseButton.addEventListener('click', function () {
-    window.modal.closeModal();
-  });
+  window.preview.controlSmallerButton.addEventListener('click', window.preview.valueDown);
+  window.preview.controlBiggerButton.addEventListener('click', window.preview.valueUp);
+  window.preview.form.addEventListener('change', window.preview.onEffectsChange);
+  window.preview.effectLevelPin.addEventListener('mouseup', window.preview.onPinMove);
 
-  const controlSmallerButton = document.querySelector('.scale__control--smaller');
-  controlSmallerButton.addEventListener('click', function () {
-    window.preview.valueDown();
-  });
-
-  const controlBiggerButton = document.querySelector('.scale__control--bigger');
-  controlBiggerButton.addEventListener('click', function () {
-    window.preview.valueUp();
-  });
-
-  const form = document.querySelector('.img-upload__form');
-  form.addEventListener('change', window.preview.onEffectsChange);
-
-  const effectLevelPin = document.querySelector('.effect-level__pin');
-  effectLevelPin.addEventListener('mouseup', window.preview.onPinMove);
-
-  window.config.hashtagsInput.addEventListener('input', window.form.onHashtagInput);
-  window.config.descriptionInput.addEventListener('input', window.form.onDescriptionInput);
+  window.form.hashtagsInput.addEventListener('input', window.form.onHashtagInput);
+  window.form.descriptionInput.addEventListener('input', window.form.onDescriptionInput);
 })();

@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  window.load = function (url, onSuccess, onError) {
+  window.load = (url, onSuccess, onError) => {
     const xhr = new XMLHttpRequest();
 
     xhr.responseType = 'json';

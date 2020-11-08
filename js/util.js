@@ -1,10 +1,9 @@
 'use strict';
 
 (function () {
-  const getIntValue = function (element) {
+  const getIntValue = (element) => {
     const valueString = element.value;
-    const number = window.parseInt(valueString);
-    return number;
+    return window.parseInt(valueString);
   };
 
   const isAllArrStrElemUniq = (arr) => {
@@ -16,7 +15,7 @@
     return isAllUniq;
   };
 
-  const showError = function (message) {
+  const showError = (message) => {
     alert(message); // eslint-disable-line no-alert
   };
 

@@ -1,14 +1,17 @@
 'use strict';
 
 (function () {
-  const isHashtag = function (word) {
+  const hashtagsInput = document.querySelector('.text__hashtags');
+  const descriptionInput = document.querySelector('.text__description');
+
+  const isHashtag = (word) => {
     const hashtagRegex = /^#[A-Za-z0-9]{1,19}$/;
     const result = hashtagRegex.test(word);
     return result;
   };
 
-  const onHashtagInput = function () {
-    const hashtags = window.config.hashtagsInput.value.split(window.config.HASHTAGS_DELIMITER);
+  const onHashtagInput = (evt) => {
+    const hashtags = evt.target.value.split(window.config.HASHTAGS_DELIMITER);
     const hashtagArr = hashtags.filter((elem) => {
       return Boolean(elem.length);
     });
@@ -18,31 +21,33 @@
     const hashtagUniqError = !window.util.isAllArrStrElemUniq(hashtagArr);
 
     if (hashtagCountError) {
-      window.config.hashtagsInput.setCustomValidity('нельзя указать больше пяти хэш-тегов');
+      evt.target.setCustomValidity('нельзя указать больше пяти хэш-тегов');
     } else if (hashtagError) {
-      window.config.hashtagsInput.setCustomValidity('неверный хештег');
+      evt.target.setCustomValidity('неверный хештег');
     } else if (hashtagUniqError) {
-      window.config.hashtagsInput.setCustomValidity('хэш-тег не может быть использован дважды');
+      evt.target.setCustomValidity('хэш-тег не может быть использован дважды');
     } else {
-      window.config.hashtagsInput.setCustomValidity('');
+      evt.target.setCustomValidity('');
     }
-    window.config.hashtagsInput.reportValidity();
+    evt.target.reportValidity();
   };
 
-  const onDescriptionInput = function () {
-    const descriptionTextLength = window.config.descriptionInput.value.length;
+  const onDescriptionInput = (evt) => {
+    const descriptionTextLength = evt.target.value.length;
     const descriptionError = descriptionTextLength > window.config.DESCRIPTION_MAX_LENGHT;
 
     if (descriptionError) {
-      window.config.descriptionInput.setCustomValidity('комментарий не может быть больше 140 символов');
+      evt.target.setCustomValidity('комментарий не может быть больше 140 символов');
     } else {
-      window.config.descriptionInput.setCustomValidity('');
+      evt.target.setCustomValidity('');
     }
 
-    window.config.descriptionInput.reportValidity();
+    evt.target.reportValidity();
   };
 
   window.form = {
+    hashtagsInput: hashtagsInput,
+    descriptionInput: descriptionInput,
     onHashtagInput: onHashtagInput,
     onDescriptionInput: onDescriptionInput
   };
