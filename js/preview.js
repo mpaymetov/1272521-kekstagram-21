@@ -23,7 +23,7 @@
 
   const setPreviewDefaultScale = () => {
     setScale(imagePreview, defaultScalePercent);
-  }
+  };
 
   const valueUp = () => {
     let number = window.util.getIntValue(controlValue);
