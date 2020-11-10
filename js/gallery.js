@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  const renderPictures = function (photoArr, pictureContainer, pictureTemplate) {
+  const renderPictures = (photoArr, pictureContainer, pictureTemplate) => {
     let fragment = document.createDocumentFragment();
     for (let i = 0; i < photoArr.length; i++) {
       const photoData = photoArr[i];
@@ -11,7 +11,15 @@
     pictureContainer.appendChild(fragment);
   };
 
+  const onContentLoad = (photoData) => {
+    const pictureContainer = document.querySelector('.pictures');
+    const pictureTemplateBlock = document.querySelector('#picture');
+    const pictureTemplate = pictureTemplateBlock.content.querySelector('a');
+
+    renderPictures(photoData, pictureContainer, pictureTemplate);
+  };
+
   window.gallery = {
-    renderPictures: renderPictures
+    onContentLoad: onContentLoad
   };
 })();

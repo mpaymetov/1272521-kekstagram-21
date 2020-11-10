@@ -1,37 +1,49 @@
 'use strict';
 
 (function () {
+  const controlValue = document.querySelector('.scale__control--value');
+  const imagePreview = document.querySelector('.img-upload__preview');
+  const defaultScalePercent = 100;
+
   const effectLevelLine = document.querySelector('.effect-level__line');
   const effectLevelDepth = document.querySelector('.effect-level__depth');
   const effectLevelValue = document.querySelector('.effect-level__value');
 
+  const form = document.querySelector('.img-upload__form');
+  const controlSmallerButton = document.querySelector('.scale__control--smaller');
+  const controlBiggerButton = document.querySelector('.scale__control--bigger');
+  const effectLevelPin = document.querySelector('.effect-level__pin');
   const effectLevelBar = document.querySelector('.img-upload__effect-level');
   let imageEffect = 'none';
 
-  const setScale = function (element, percent) {
+  const setScale = (element, percent) => {
     const scaleValue = percent / 100;
     element.style = `transform: scale(${scaleValue})`;
   };
 
-  const valueUp = function () {
-    let number = window.util.getIntValue(window.config.controlValue);
+  const setPreviewDefaultScale = () => {
+    setScale(imagePreview, defaultScalePercent);
+  };
+
+  const valueUp = () => {
+    let number = window.util.getIntValue(controlValue);
     if ((number + window.config.CONTROL_STEP) <= window.config.MAX_CONTROL_VALUE) {
       number += window.config.CONTROL_STEP;
-      window.config.controlValue.value = number + '%';
-      setScale(window.config.imagePreview, number);
+      controlValue.value = number + '%';
+      setScale(imagePreview, number);
     }
   };
 
-  const valueDown = function () {
-    let number = window.util.getIntValue(window.config.controlValue);
+  const valueDown = () => {
+    let number = window.util.getIntValue(controlValue);
     if ((number - window.config.CONTROL_STEP) >= window.config.MIN_CONTROL_VALUE) {
       number -= window.config.CONTROL_STEP;
-      window.config.controlValue.value = number + '%';
-      setScale(window.config.imagePreview, number);
+      controlValue.value = number + '%';
+      setScale(imagePreview, number);
     }
   };
 
-  const getEffectList = function () {
+  const getEffectList = () => {
     let effectsList = [];
     const effectButtons = document.querySelectorAll('.effects__radio');
     for (let i = 0; i < effectButtons.length; i++) {
@@ -41,25 +53,25 @@
     return effectsList;
   };
 
-  const removeAllEffectClasses = function () {
+  const removeAllEffectClasses = () => {
     const effectsList = getEffectList();
     for (let i = 0; i < effectsList.length; i++) {
       const effectClassName = window.config.EFFECT_CLASS_START + effectsList[i];
-      if (window.config.imagePreview.classList.contains(effectClassName)) {
-        window.config.imagePreview.classList.remove(effectClassName);
+      if (imagePreview.classList.contains(effectClassName)) {
+        imagePreview.classList.remove(effectClassName);
       }
     }
   };
 
-  const onEffectsChange = function (evt) {
+  const onEffectsChange = (evt) => {
     if (evt.target && evt.target.matches('input[type="radio"]')) {
       removeAllEffectClasses();
-      window.config.imagePreview.style = '';
-      window.config.controlValue.value = window.config.defaultScalePercent + '%';
+      imagePreview.style = '';
+      controlValue.value = defaultScalePercent + '%';
       imageEffect = evt.target.value;
       if (imageEffect !== 'none') {
         const effectClass = window.config.EFFECT_CLASS_START + imageEffect;
-        window.config.imagePreview.classList.add(effectClass);
+        imagePreview.classList.add(effectClass);
         if (effectLevelBar.classList.contains(window.config.HIDE_CLASS)) {
           effectLevelBar.classList.remove(window.config.HIDE_CLASS);
         }
@@ -69,7 +81,7 @@
     }
   };
 
-  const setEffectStyle = function (level) {
+  const setEffectStyle = (level) => {
     const levelPercent = level * 100;
     let effectStyle = '';
     if (imageEffect === 'chrome') {
@@ -89,10 +101,10 @@
       const effectValue = level * 2 + 1;
       effectStyle = 'filter: brightness(' + effectValue + ')';
     }
-    window.config.imagePreview.style = effectStyle;
+    imagePreview.style = effectStyle;
   };
 
-  const onPinMove = function () {
+  const onPinMove = () => {
     const effectLevelLineWidth = effectLevelLine.offsetWidth;
     const effectLevelDepthWidth = effectLevelDepth.offsetWidth;
     const level = (effectLevelDepthWidth / effectLevelLineWidth).toFixed(2);
@@ -103,7 +115,12 @@
 
   window.preview = {
     effectLevelBar: effectLevelBar,
+    controlSmallerButton: controlSmallerButton,
+    controlBiggerButton: controlBiggerButton,
+    effectLevelPin: effectLevelPin,
+    form: form,
     setScale: setScale,
+    setPreviewDefaultScale: setPreviewDefaultScale,
     valueUp: valueUp,
     valueDown: valueDown,
     removeAllEffectClasses: removeAllEffectClasses,
